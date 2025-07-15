@@ -7,6 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+/**
+ * The entrypoint class of Elytra Conventions Gradle Plugin.
+ */
 public class ElytraConventionsPlugin implements Plugin<Project> {
 
     @NotNull

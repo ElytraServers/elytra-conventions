@@ -17,14 +17,28 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
-public class ModpackVersion {
+/**
+ * The Manifest Version Management Util.
+ * <p>
+ * You can get the corresponding version of dependent mods used in the modpack from the given manifest.
+ * <p>
+ * To specify the modpack version, you need to assign the property {@code elytra.manifest.version} in somewhere like
+ * <i>gradle.properties</i>. You can also assign the property {@code elytra.manifest.no-cache} to control if caching is
+ * used.
+ * <p>
+ * You can get the version of the dependant mods by {@link #getVersion(String)} or {@link #getAt(String)} in Groovy
+ * special way {@code ModpackVersion[DEP]}.
+ */
+public class ModpackVersion extends AbstractMap<String, String> {
 
     private static final Gson GSON = new Gson();
     private static final String MANIFEST_URL_TEMPLATE = "https://raw.githubusercontent.com/GTNewHorizons/DreamAssemblerXXL/refs/heads/master/releases/manifests/%s.json";
@@ -43,6 +57,12 @@ public class ModpackVersion {
         singleton = this;
     }
 
+    /**
+     * Internal method. Initialize the ModpackVersion.
+     *
+     * @param version      the version of manifest to be loaded
+     * @param forceRefresh {@code true} to disable caching
+     */
     @ApiStatus.Internal
     public static void init(String version, boolean forceRefresh) {
         Project project = ElytraConventionsPlugin.PROJECT.get();
@@ -137,22 +157,50 @@ public class ModpackVersion {
         });
     }
 
-    @Nullable
-    public static String getVersion(String name) {
-        return Objects.requireNonNull(singleton, "ModpackVersion isn't initialized.").modVersionMap.get(name);
+    /**
+     * @return the singleton instance of {@link ModpackVersion}.
+     */
+    public static ModpackVersion get() {
+        return Objects.requireNonNull(singleton, "ModpackVersion isn't initialized.");
     }
 
+    /**
+     * @param name the mod name, like {@code GT5-Unofficial}.
+     * @return the version of the given dependant mod.
+     */
+    @Nullable
+    public static String getVersion(String name) {
+        return get().modVersionMap.get(name);
+    }
+
+    /**
+     * @param propertyName the mod name, like {@code GT5-Unofficial}.
+     * @return the version of the given dependant mod.
+     */
     @Nullable
     public static String getAt(String propertyName) { // Groovy magic function
         return getVersion(propertyName);
     }
 
+    /**
+     * @return the map of all loaded dependant mods with their version.
+     */
     @NotNull
     @UnmodifiableView
-    public Map<String, String> getModVersions() {
-        return Collections.unmodifiableMap(modVersionMap);
+    public static Map<String, String> getModVersions() {
+        return Collections.unmodifiableMap(get().modVersionMap);
     }
 
+    @NotNull
+    @Override
+    public Set<Entry<String, String>> entrySet() {
+        return modVersionMap.entrySet();
+    }
+
+    /**
+     * @param name the dependant mod name
+     * @return a dependency notation for dependencies under group {@code com.github.GTNewHorizons}.
+     */
     public static String gtnh(String name) {
         return "com.github.GTNewHorizons:" + name + ":" + getAt(name);
     }
