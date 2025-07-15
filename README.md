@@ -3,6 +3,35 @@
 A Gradle convention plugin specifically designed for GTNH projects.\
 一个专门为 GTNH 项目设计的 Gradle 预设插件。
 
+## Setup 配置
+
+[![](https://jitpack.io/v/ElytraServers/elytra-conventions.svg)](https://jitpack.io/#ElytraServers/elytra-conventions)
+
+You can get the plugin in JitPack:\
+你可以从 JitPack 获取插件：
+
+```kotlin
+// settings.gradle.kts
+pluginManagement {
+	repositories {
+		// ...
+		maven {
+			url = uri("https://jitpack.io")
+		}
+	}
+}
+```
+
+Then, you can import the plugin to your project:\
+然后你可以把插件添加到你的项目：
+
+```kotlin
+plugins {
+	// ...
+	id("com.github.ElytraServers.elytra-conventions") version "{VERSION_HERE}"
+}
+```
+
 ### Version Management with Manifests 使用清单进行版本管理
 
 The GTNH team provides a modpack manifest which contains version information for the mods. This manifest significantly
