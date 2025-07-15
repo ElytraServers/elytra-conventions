@@ -44,7 +44,8 @@ public class ModpackVersion {
     }
 
     @ApiStatus.Internal
-    public static void init(Project project, String version, boolean forceRefresh) {
+    public static void init(String version, boolean forceRefresh) {
+        Project project = ElytraConventionsPlugin.PROJECT.get();
         Path path = project.getLayout()
             .getBuildDirectory()
             .dir("elytra_conventions")
@@ -65,17 +66,26 @@ public class ModpackVersion {
     }
 
     private void init(String version, Path cache, boolean forceRefresh) {
+        Project project = ElytraConventionsPlugin.PROJECT.get();
+
         try {
             if (!forceRefresh && Files.exists(cache)) {
+                project.getLogger()
+                    .info("Manifest cache hit at {}", cache);
                 try {
                     Manifest manifest = getManifestFromFile(cache);
                     readManifest(manifest);
+                    return;
                 } catch (Exception e) {
+                    project.getLogger()
+                        .info("Failed to read cached manifest", e);
                     Files.delete(cache);
                     // ignore the exception and continue as if there's no cache.
                 }
             }
 
+            project.getLogger()
+                .info("Try downloading manifest from Github");
             Manifest manifest = getManifestFromGithub(version);
             readManifest(manifest);
             saveManifestToFile(cache, manifest);
@@ -100,7 +110,7 @@ public class ModpackVersion {
         try {
             return GSON.fromJson(Files.newBufferedReader(manifestPath), Manifest.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to load the Manifest at path " + manifestPath + ".", e);
         }
     }
 
@@ -114,8 +124,17 @@ public class ModpackVersion {
     }
 
     private void readManifest(Manifest manifest) {
-        manifest.github_mods.forEach((name, info) -> modVersionMap.put(name, info.version));
-        manifest.external_mods.forEach((name, info) -> modVersionMap.put(name, info.version));
+        Project project = ElytraConventionsPlugin.PROJECT.get();
+        manifest.github_mods.forEach((name, info) -> {
+            project.getLogger()
+                .debug("Manifest Entry: Github Mod {} version {}", name, info.version);
+            modVersionMap.put(name, info.version);
+        });
+        manifest.external_mods.forEach((name, info) -> {
+            project.getLogger()
+                .debug("Manifest Entry: External Mod {} version {}", name, info.version);
+            modVersionMap.put(name, info.version);
+        });
     }
 
     @Nullable

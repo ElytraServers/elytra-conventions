@@ -16,5 +16,5 @@ repositories {
 }
 
 dependencies {
-    implementation ModpackVersion.gtnh("GT5-Unofficial") + ":dev"
+    implementation ModpackVersion.gtnh("CodeChickenCore") + ":dev"
 }
