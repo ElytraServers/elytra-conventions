@@ -3,6 +3,9 @@ plugins {
 	`maven-publish`
 }
 
+group = "com.github.ElytraServers"
+version = "1.0.0-SNAPSHOT"
+
 evaluationDependsOnChildren()
 
 repositories {
@@ -20,9 +23,13 @@ dependencies {
 gradlePlugin {
 	plugins {
 		website = "https://github.com/ElytraServers"
-		isAutomatedPublishing = false
 		create("main") {
-			id = "cn.elytra.gradle.conventions"
+			id = if(System.getenv("JITPACK") == "true") {
+				println("I love you JitPack!")
+				"com.github.ElytraServers.elytra-conventions"
+			} else {
+				"cn.elytra.gradle.conventions"
+			}
 			implementationClass = "cn.elytra.gradle.conventions.ElytraConventionsPlugin"
 			displayName = "Elytra Conventions"
 			description = "Nothing, just a conventions."
