@@ -205,6 +205,15 @@ public class ModpackVersion extends AbstractMap<String, String> {
         return "com.github.GTNewHorizons:" + name + ":" + getAt(name);
     }
 
+    /**
+     * @param name       the dependant mod name
+     * @param classifier the desired classifier ({@code dev}, {@code sources}, etc)
+     * @return a dependency notation for dependencies under group {@code com.github.GTNewHorizons}.
+     */
+    public static String gtnh(String name, String classifier) {
+        return "com.github.GTNewHorizons:" + name + ":" + getAt(name) + ":" + classifier;
+    }
+
 }
 
 @SuppressWarnings("unused")
