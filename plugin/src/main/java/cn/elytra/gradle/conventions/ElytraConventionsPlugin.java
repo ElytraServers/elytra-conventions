@@ -31,6 +31,7 @@ public class ElytraConventionsPlugin implements Plugin<Project> {
         boolean forceRefresh = getBooleanProperty("elytra.manifest.no-cache").orElse(false);
 
         ModpackVersion.init(manifestVersion, forceRefresh);
+        project.getExtensions().getExtraProperties().set("elytraManifest", ModpackVersion.get());
 
         PROJECT.remove();
     }

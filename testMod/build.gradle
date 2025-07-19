@@ -18,3 +18,8 @@ repositories {
 dependencies {
     implementation ModpackVersion.gtnh("CodeChickenCore") + ":dev"
 }
+
+project.ext.elytraManifest.entrySet().stream().limit(10).forEach { pair ->
+    def (k, v) = [pair.key, pair.value]
+    println("[Elytra Manifest] $k = $v")
+}

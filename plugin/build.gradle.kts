@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.github.ElytraServers"
-version = "1.0.0-SNAPSHOT"
+version = System.getenv("VERSION") ?: "99.99.99"
 
 evaluationDependsOnChildren()
 
