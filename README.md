@@ -53,3 +53,27 @@ For example:\
 elytra.manifest.version=2.7.4 # Modpack version 2.7.4
 elytra.manifest.no-cache=true # Don't use caches
 ```
+
+Then you can access the versions like:\
+然后你可以像这样获取版本：
+
+```kotlin
+// import cn.elytra.gradle.conventions.ModpackVersion
+ModpackVersion.getVersion("MOD_NAME")
+```
+
+Or more Groovy way:\
+或者更加 Groovy 的方法：
+
+```groovy
+// import cn.elytra.gradle.conventions.ModpackVersion
+ModpackVersion["MOD_NAME"]
+```
+
+In some edge cases that the class is not directly accessible, like in `dependencies.gradle` of GTNHGradle:\
+在一些奇奇怪怪的情况下无法直接访问类，例如 GTNHGradle 的 `dependencies.gradle`：
+
+```groovy
+project.ext.elytraManifest // the instance of ModpackVersion implementing Map<String, String>
+project.ext.elytraManifest.getVersion("MOD_NAME")
+```

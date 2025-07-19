@@ -1,0 +1,1 @@
+println "Forgelin in Addon: " + project.ext.elytraManifest["Forgelin"]
