@@ -1,8 +1,9 @@
 package cn.elytra.gradle.conventions.internal
 
 import cn.elytra.gradle.conventions.Manifest
-import cn.elytra.gradle.conventions.internal.Util.suppressException
 import cn.elytra.gradle.conventions.internal.ManifestUtils.FORCE_REFRESH_VERSIONS
+import cn.elytra.gradle.conventions.internal.Util.getOrThrow
+import cn.elytra.gradle.conventions.internal.Util.suppressException
 import com.google.gson.GsonBuilder
 import org.gradle.api.Project
 import java.io.File
@@ -73,7 +74,8 @@ internal object ManifestUtils {
 			}
 		}
 
-		val manifest = loadManifestFromGithub(manifestVersion).getOrThrow()
+		val manifest = loadManifestFromGithub(manifestVersion)
+			.getOrThrow { IllegalStateException("Failed to load the manifest from Github", it) }
 		trySaveManifestCache(project, manifestVersion, manifest)
 		return manifest
 	}

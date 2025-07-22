@@ -14,6 +14,7 @@ public class ElytraConventionsPlugin : Plugin<Project> {
 		@Suppress("DEPRECATION")
 		let { // run deprecated initialization here
 			ModpackVersion.init(modpackVersionExt)
+			project.extensions.extraProperties.set("elytraManifest", ModpackVersion)
 		}
 	}
 

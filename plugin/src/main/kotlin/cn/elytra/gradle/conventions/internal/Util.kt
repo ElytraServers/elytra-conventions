@@ -31,4 +31,13 @@ internal object Util {
 		}
 	}
 
+	/**
+	 * Read the value or throw the customized exception given from the [throwableCtor].
+	 */
+	inline fun <T> Result<T>.getOrThrow(throwableCtor: (Throwable) -> Throwable) = try {
+		getOrThrow()
+	} catch(e: Throwable) {
+		throw throwableCtor(e)
+	}
+
 }
