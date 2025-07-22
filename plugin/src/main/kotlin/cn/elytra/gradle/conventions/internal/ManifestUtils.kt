@@ -5,6 +5,8 @@ import cn.elytra.gradle.conventions.internal.ManifestUtils.FORCE_REFRESH_VERSION
 import cn.elytra.gradle.conventions.internal.Util.getOrThrow
 import cn.elytra.gradle.conventions.internal.Util.suppressException
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import org.gradle.api.Project
 import java.io.File
 import java.io.FileNotFoundException
@@ -17,6 +19,12 @@ internal object ManifestUtils {
 
 	private const val MANIFEST_URL_TEMPLATE =
 		"https://raw.githubusercontent.com/GTNewHorizons/DreamAssemblerXXL/refs/heads/master/releases/manifests/%s.json"
+	private const val GITHUB_REPO_CONTENT_API =
+		"https://api.github.com/repos/%s/%s/contents/%s" // owner, repo, path
+	private const val GTNH_OWNER = "GTNewHorizons"
+	private const val MANIFEST_REPO = "DreamAssemblerXXL"
+	private const val MANIFEST_DIR_PATH = "releases/manifests"
+
 	private val FORCE_REFRESH_VERSIONS = mutableListOf("daily", "nightly", "experimental")
 
 	private val httpClient = HttpClient.newBuilder().build()
@@ -102,4 +110,18 @@ internal object ManifestUtils {
 			.toMap()
 	}
 
+	private fun listManifestsFromGithub(): Result<Map<String, String>> /* Manifest File Name -> Manifest File URL */ =
+		runCatching {
+			val url = GITHUB_REPO_CONTENT_API.format(GTNH_OWNER, MANIFEST_REPO, MANIFEST_DIR_PATH)
+			val request = HttpRequest.newBuilder(URI(url)).build()
+			val response = httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream())
+			val arr = gson.fromJson(response.body().bufferedReader(Charsets.UTF_8), JsonArray::class.java)
+			arr.map { it as JsonObject }.associate { it["name"].asString to it["html_url"].asString }
+		}
+
+	@Suppress("unused") // maybe use later
+	internal fun listManifests(): Set<String> {
+		return listManifestsFromGithub()
+			.getOrThrow { IllegalStateException("Failed to load the manifest from Github", it) }.keys
+	}
 }
