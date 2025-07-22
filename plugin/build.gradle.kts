@@ -4,6 +4,7 @@ plugins {
 	`maven-publish`
 
 	id("com.palantir.git-version") version "4.0.0"
+	id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.18.1"
 }
 
 val gitVersion: groovy.lang.Closure<String> by extra
@@ -52,4 +53,9 @@ java {
 
 kotlin {
 	explicitApi = org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Warning
+}
+
+apiValidation {
+	ignoredPackages += listOf("cn.elytra.gradle.conventions.internal")
+	apiDumpDirectory = "api"
 }
