@@ -2,10 +2,14 @@ plugins {
 	`java-gradle-plugin`
 	`kotlin-dsl`
 	`maven-publish`
+
+	id("com.palantir.git-version") version "4.0.0"
 }
 
+val gitVersion: groovy.lang.Closure<String> by extra
+
 group = "com.github.ElytraServers"
-version = System.getenv("VERSION") ?: "99.99.99"
+version = System.getenv("VERSION") ?: gitVersion()
 
 evaluationDependsOnChildren()
 

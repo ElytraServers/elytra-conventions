@@ -1,3 +1,5 @@
+@file:JvmName("ModpackVersion")
+
 package cn.elytra.gradle.conventions
 
 import org.jetbrains.annotations.UnmodifiableView
@@ -10,20 +12,20 @@ import org.jetbrains.annotations.UnmodifiableView
  * accessible in these cases.
  */
 @Deprecated("Use ElytraModpackVersionExtension instead.")
-public class ModpackVersion(private val delegate: Map<String, String>) : Map<String, String> by delegate {
+public class ModpackVersionLegacy(private val delegate: Map<String, String>) : Map<String, String> by delegate {
 
 	@Suppress("DEPRECATION")
 	@Deprecated("Use ElytraModpackVersionExtension instead.")
 	public companion object {
 
-		private var singleton: ModpackVersion? = null
+		private var singleton: ModpackVersionLegacy? = null
 
-		internal fun init(ext: ElytraModpackVersionExtension) {
-			singleton = ModpackVersion(ext.getAllVersions())
+		internal fun init(mv: cn.elytra.gradle.conventions.objects.ModpackVersion) {
+			singleton = ModpackVersionLegacy(mv)
 		}
 
 		@JvmStatic
-		public fun get(): ModpackVersion {
+		public fun get(): ModpackVersionLegacy {
 			return requireNotNull(singleton)
 		}
 

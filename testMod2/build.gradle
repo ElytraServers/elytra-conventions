@@ -3,10 +3,6 @@ plugins {
     id "cn.elytra.gradle.conventions"
 }
 
-elytraModpackVersion {
-
-}
-
 dependencies {
     println "GT5 = ${elytraModpackVersion["GT5-Unofficial"]}"
     println "GTNHLib = ${elytraModpackVersion["GTNHLib"]}"
