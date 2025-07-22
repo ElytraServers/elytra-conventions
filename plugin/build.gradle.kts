@@ -1,5 +1,6 @@
 plugins {
 	`java-gradle-plugin`
+	`kotlin-dsl`
 	`maven-publish`
 }
 
@@ -17,7 +18,6 @@ dependencies {
 	compileOnly(gradleApi())
 
 	implementation("com.google.code.gson:gson:2.13.1")
-	implementation("com.squareup.okhttp3:okhttp:5.1.0")
 }
 
 gradlePlugin {
@@ -43,6 +43,9 @@ java {
 	}
 	sourceCompatibility = JavaVersion.VERSION_17
 	targetCompatibility = JavaVersion.VERSION_17
-	withJavadocJar()
 	withSourcesJar()
+}
+
+kotlin {
+	explicitApi = org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Warning
 }

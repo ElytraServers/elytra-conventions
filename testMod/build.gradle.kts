@@ -1,14 +1,7 @@
-import cn.elytra.gradle.conventions.ModpackVersion
-
 plugins {
     id("java")
     id("cn.elytra.gradle.conventions")
 }
-
-println("GT5 = ${ModpackVersion.get()["GT5-Unofficial"]}")
-println("GTNHLib = ${ModpackVersion.getVersion("GTNHLib")}")
-
-apply(from = "addon.gradle")
 
 repositories {
     mavenCentral()
@@ -19,5 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation(ModpackVersion.gtnh("CodeChickenCore", "dev"))
+    println("GT5 = ${elytraModpackVersion["GT5-Unofficial"]}")
+    println("GTNHLib = ${elytraModpackVersion["GTNHLib"]}")
+    println(elytraModpackVersion.gtnhdev("CodeChickenCore"))
 }

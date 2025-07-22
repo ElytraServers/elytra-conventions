@@ -8,5 +8,5 @@ pluginManagement {
 
 // ignore this when publishing to JitPack
 if(System.getenv("JITPACK") != "true") {
-	include("testMod")
+	include("testMod", "testMod2")
 }
