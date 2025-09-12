@@ -1,7 +1,6 @@
 package cn.elytra.gradle.conventions.api
 
 import org.jetbrains.annotations.UnmodifiableView
-import java.util.function.BiConsumer
 
 public interface ModpackVersionHandler : Map<String, String> {
 
@@ -41,31 +40,4 @@ public interface ModpackVersionHandler : Map<String, String> {
      */
     public fun gtnhdev(name: String): String = gtnh(name, "dev")
 
-
-    /////////////////////////////////////////////////////////////////
-    ////            Manually delegate implementation            /////
-    /////////////////////////////////////////////////////////////////
-    public fun getDelegation(): Map<String, String>
-
-    override fun containsKey(key: String): Boolean = getDelegation().containsKey(key)
-
-    override fun containsValue(value: String): Boolean = getDelegation().containsValue(value)
-
-    override fun get(key: String): String? = getDelegation()[key]
-
-    override fun getOrDefault(key: String, defaultValue: String): String = getDelegation().getOrDefault(key, defaultValue)
-
-    override fun isEmpty(): Boolean = getDelegation().isEmpty()
-
-    override val entries: Set<Map.Entry<String, String>>
-        get() = getDelegation().entries
-    override val keys: Set<String>
-        get() = getDelegation().keys
-    override val size: Int
-        get() = getDelegation().size
-    override val values: Collection<String>
-        get() = getDelegation().values
-
-    override fun forEach(action: BiConsumer<in String, in String>): Unit = getDelegation().forEach(action)
-    /////////////////////////////////////////////////////////////////
 }

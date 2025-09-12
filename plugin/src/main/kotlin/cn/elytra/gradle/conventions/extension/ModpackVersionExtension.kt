@@ -8,6 +8,7 @@ import org.gradle.api.Project
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.property
+import java.util.function.BiConsumer
 import javax.inject.Inject
 
 public abstract class ModpackVersionExtension : ModpackVersionHandler {
@@ -17,9 +18,6 @@ public abstract class ModpackVersionExtension : ModpackVersionHandler {
 
     @get:Inject
     internal abstract val objectFactory: ObjectFactory
-
-    // manually delegate impl
-    override fun getDelegation(): Map<String, String> = delegate
 
     /**
      *  Obviously, setting your gtnh version, if you don't set it will default to
@@ -72,5 +70,29 @@ public abstract class ModpackVersionExtension : ModpackVersionHandler {
     public fun getAttachManifestVersionToJar(): Boolean = attachManifestVersionToJar.get()
     public fun setAttachManifestVersionToJar(boolean: Boolean): Unit = attachManifestVersionToJar.set(boolean)
 
+    /////////////////////////////////////////////////////////////////
+    ////            Manually delegate implementation            /////
+    /////////////////////////////////////////////////////////////////
+    override fun containsKey(key: String): Boolean = delegate.containsKey(key)
+
+    override fun containsValue(value: String): Boolean = delegate.containsValue(value)
+
+    override fun get(key: String): String? = delegate[key]
+
+    override fun getOrDefault(key: String, defaultValue: String): String = delegate.getOrDefault(key, defaultValue)
+
+    override fun isEmpty(): Boolean = delegate.isEmpty()
+
+    override val entries: Set<Map.Entry<String, String>>
+        get() = delegate.entries
+    override val keys: Set<String>
+        get() = delegate.keys
+    override val size: Int
+        get() = delegate.size
+    override val values: Collection<String>
+        get() = delegate.values
+
+    override fun forEach(action: BiConsumer<in String, in String>): Unit = delegate.forEach(action)
+    /////////////////////////////////////////////////////////////////
 
 }
