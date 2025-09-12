@@ -1,5 +1,3 @@
-import cn.elytra.gradle.conventions.objects.ModpackVersion
-
 plugins {
     id("java")
     id("cn.elytra.gradle.conventions")
@@ -13,9 +11,14 @@ repositories {
     }
 }
 
-val elytraModpackVersion: ModpackVersion by extra
+elytraModpackVersion {
+    gtnhVersion = "2.8.0-beta-4"
+    manifestNoCache = false
+    attachManifestVersionToJar = true
+}
 
 dependencies {
+    println("GtnhVersion = ${elytraModpackVersion.gtnhVersion.get()}")
     println("GT5 = ${elytraModpackVersion["GT5-Unofficial"]}")
     println("GTNHLib = ${elytraModpackVersion["GTNHLib"]}")
     println(elytraModpackVersion.gtnhdev("CodeChickenCore"))
