@@ -21,11 +21,6 @@ public class ModpackVersionLegacy(private val delegate: Map<String, String>) : M
 
 		private var singleton: ModpackVersionLegacy? = null
 
-		@Suppress("unused")
-		internal fun init(mv: cn.elytra.gradle.conventions.objects.ModpackVersion) {
-			singleton = ModpackVersionLegacy(mv)
-		}
-
 		internal fun init(handler: ModpackVersionHandler) {
 			singleton = ModpackVersionLegacy(handler)
 		}
