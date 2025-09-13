@@ -3,7 +3,14 @@ plugins {
     id "cn.elytra.gradle.conventions"
 }
 
+elytraModpackVersion {
+    gtnhVersion = "2.7.3"
+    manifestNoCache = false
+    attachManifestVersionToJar = true
+}
+
 dependencies {
+    println "GtnhVersion = ${elytraModpackVersion.gtnhVersion}"
     println "GT5 = ${elytraModpackVersion["GT5-Unofficial"]}"
     println "GTNHLib = ${elytraModpackVersion["GTNHLib"]}"
     println elytraModpackVersion.gtnhdev("CodeChickenCore")
