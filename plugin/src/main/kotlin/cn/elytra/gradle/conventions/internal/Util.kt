@@ -8,7 +8,7 @@ internal object Util {
 	internal inline fun suppressException(block: () -> Unit) {
 		try {
 			block()
-		} catch (e: Exception) {
+		} catch(e: Exception) {
 			e.printStackTrace()
 		}
 	}
@@ -22,11 +22,13 @@ internal object Util {
 				is String -> propValue.toBoolean() as T
 				else -> error("Unexpected type of property $propertyName")
 			}
+
 			typeOf<Int>() -> when(propValue) {
 				is Int -> propValue as T
 				is String -> propValue.toInt() as T
 				else -> error("Unexpected type of property $propertyName")
 			}
+
 			else -> error("Property $propertyName is not of type ${T::class}")
 		}
 	}

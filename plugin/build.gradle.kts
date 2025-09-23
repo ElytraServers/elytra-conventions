@@ -12,6 +12,10 @@ val gitVersion: groovy.lang.Closure<String> by extra
 group = "com.github.ElytraServers"
 version = System.getenv("VERSION") ?: gitVersion()
 
+tasks.wrapper {
+	distributionType = Wrapper.DistributionType.ALL
+}
+
 evaluationDependsOnChildren()
 
 repositories {
@@ -26,20 +30,20 @@ dependencies {
 }
 
 gradlePlugin {
-	plugins {
-		website = "https://github.com/ElytraServers"
-		create("main") {
-			id = if(System.getenv("JITPACK") == "true") {
-				println("I love you JitPack!")
-				"com.github.ElytraServers.elytra-conventions"
-			} else {
-				"cn.elytra.gradle.conventions"
-			}
-			implementationClass = "cn.elytra.gradle.conventions.ElytraConventionsPlugin"
-			displayName = "Elytra Conventions"
-			description = "Nothing, just a conventions."
+	val main by plugins.creating {
+		id = if(System.getenv("JITPACK") == "true") {
+			println("I love you JitPack!")
+			"com.github.ElytraServers.elytra-conventions"
+		} else {
+			"cn.elytra.gradle.conventions"
 		}
+		implementationClass = "cn.elytra.gradle.conventions.ElytraConventionsPlugin"
+		displayName = "Elytra Conventions"
+		description = "Nothing, just a conventions."
 	}
+
+	website = "https://github.com/ElytraServers/elytra-conventions"
+	vcsUrl = "https://github.com/ElytraServers/elytra-conventions"
 }
 
 java {
