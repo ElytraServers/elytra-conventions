@@ -32,6 +32,7 @@ public abstract class cn/elytra/gradle/conventions/extension/ModpackVersionExten
 	public final fun getAt (Ljava/lang/String;)Ljava/lang/String;
 	public final fun getAttachManifestVersionToJar ()Lorg/gradle/api/provider/Property;
 	public final fun getAttachManifestVersionToJar ()Z
+	public final fun getAutoConfigureProxy ()Lorg/gradle/api/provider/Property;
 	public fun getEntries ()Ljava/util/Set;
 	public final fun getGtnhVersion ()Ljava/lang/String;
 	public final fun getGtnhVersion ()Lorg/gradle/api/provider/Property;
