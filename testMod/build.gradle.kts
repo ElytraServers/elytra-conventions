@@ -13,7 +13,7 @@ repositories {
 
 elytraModpackVersion {
     gtnhVersion = "2.8.0-beta-4"
-    manifestNoCache = false
+    manifestNoCache = true
     attachManifestVersionToJar = true
 }
 

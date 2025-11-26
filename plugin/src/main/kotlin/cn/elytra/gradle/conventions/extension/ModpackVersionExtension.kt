@@ -56,7 +56,16 @@ public abstract class ModpackVersionExtension : AbstractMap<String, String>() {
 		})
 		.apply { finalizeValueOnRead() }
 
+	public val autoConfigureProxy: Property<Boolean> = objectFactory
+		.property<Boolean>()
+		.convention(true)
+		.apply { finalizeValueOnRead() }
+
 	private val delegate: Map<String, String> by lazy {
+		if(autoConfigureProxy.get()) {
+			System.setProperty("java.net.useSystemProxies", "true")
+			project.logger.info("Configuring java.net.useSystemProxies = true")
+		}
 		ManifestUtils.getManifest(project, gtnhVersion.get(), manifestNoCache.get())
 			.let(ManifestUtils::extractManifestToMap)
 	}
