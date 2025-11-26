@@ -117,11 +117,11 @@ internal object ManifestUtils {
 			val response = httpClient.send(request, HttpResponse.BodyHandlers.ofInputStream())
 			val arr = gson.fromJson(response.body().bufferedReader(Charsets.UTF_8), JsonArray::class.java)
 			arr.map { it as JsonObject }.associate { it["name"].asString to it["html_url"].asString }
+				.filter { (filename, _) -> filename.endsWith(".json") }
 		}
 
-	@Suppress("unused") // maybe use later
-	internal fun listManifests(): Set<String> {
+	internal fun listManifests(): Map<String, String> {
 		return listManifestsFromGithub()
-			.getOrThrow { IllegalStateException("Failed to load the manifest from Github", it) }.keys
+			.getOrThrow { IllegalStateException("Failed to load the manifest from Github", it) }
 	}
 }
