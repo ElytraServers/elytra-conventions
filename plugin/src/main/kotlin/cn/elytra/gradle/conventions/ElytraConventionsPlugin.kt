@@ -1,6 +1,7 @@
 package cn.elytra.gradle.conventions
 
 import cn.elytra.gradle.conventions.extension.ModpackVersionExtension
+import cn.elytra.gradle.conventions.task.ListAvailableManifestsTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.jvm.tasks.Jar
@@ -16,6 +17,8 @@ public abstract class ElytraConventionsPlugin : Plugin<Project> {
 			"elytraModpackVersion",
 			ModpackVersionExtension::class.java
 		)
+
+		project.tasks.register("listAvailableManifests", ListAvailableManifestsTask::class.java)
 
 		// Attach manifest version to JAR
 		project.afterEvaluate {

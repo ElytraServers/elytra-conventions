@@ -50,3 +50,8 @@ public abstract class cn/elytra/gradle/conventions/extension/ModpackVersionExten
 	public final fun setManifestNoCache (Z)V
 }
 
+public abstract class cn/elytra/gradle/conventions/task/ListAvailableManifestsTask : org/gradle/api/DefaultTask {
+	public fun <init> ()V
+	public final fun execute ()V
+}
+
