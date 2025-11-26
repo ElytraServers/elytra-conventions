@@ -5,11 +5,13 @@ plugins {
 
 	id("com.palantir.git-version") version "4.0.0"
 	id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.18.1"
+
+	id("com.gradle.plugin-publish") version "2.0.0"
 }
 
 val gitVersion: groovy.lang.Closure<String> by extra
 
-group = "com.github.ElytraServers"
+group = "cn.elytra.gradle"
 version = System.getenv("VERSION") ?: gitVersion()
 
 tasks.wrapper {
@@ -40,6 +42,7 @@ gradlePlugin {
 		implementationClass = "cn.elytra.gradle.conventions.ElytraConventionsPlugin"
 		displayName = "Elytra Conventions"
 		description = "Nothing, just a conventions."
+		tags = listOf("minecraft")
 	}
 
 	website = "https://github.com/ElytraServers/elytra-conventions"
@@ -56,7 +59,7 @@ java {
 }
 
 kotlin {
-	explicitApi = org.jetbrains.kotlin.gradle.dsl.ExplicitApiMode.Warning
+	explicitApiWarning()
 }
 
 apiValidation {
