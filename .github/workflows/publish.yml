@@ -30,5 +30,5 @@ jobs:
       - name: Publish to Gradle Plugin Portal
         run: ./gradlew :elytra-conventions:publishPlugins
         env:
-          ORG_GRADLE_PROJECT_gradle_publish_key: ${{ secrets.ORG_GRADLE_PROJECT_GRADLE_PUBLISH_KEY }}
-          ORG_GRADLE_PROJECT_gradle_publish_secret: ${{ secrets.ORG_GRADLE_PROJECT_GRADLE_PUBLISH_SECRET }}
+          GRADLE_PUBLISH_KEY: ${{ secrets.ORG_GRADLE_PROJECT_GRADLE_PUBLISH_KEY }}
+          GRADLE_PUBLISH_SECRET: ${{ secrets.ORG_GRADLE_PROJECT_GRADLE_PUBLISH_SECRET }}
