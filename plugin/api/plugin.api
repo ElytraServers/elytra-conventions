@@ -4,6 +4,12 @@ public abstract class cn/elytra/gradle/conventions/ElytraConventionsPlugin : org
 	public fun apply (Lorg/gradle/api/Project;)V
 }
 
+public final class cn/elytra/gradle/conventions/ElytraConventionsSettingsPlugin : org/gradle/api/Plugin {
+	public fun <init> ()V
+	public synthetic fun apply (Ljava/lang/Object;)V
+	public fun apply (Lorg/gradle/api/initialization/Settings;)V
+}
+
 public class cn/elytra/gradle/conventions/Manifest {
 	public field config Ljava/lang/String;
 	public field external_mods Ljava/util/Map;
@@ -18,6 +24,12 @@ public class cn/elytra/gradle/conventions/Mod {
 	public field side Ljava/lang/String;
 	public field version Ljava/lang/String;
 	public fun <init> ()V
+}
+
+public abstract class cn/elytra/gradle/conventions/extension/ElytraSettingsExtension {
+	public fun <init> ()V
+	public final fun getModpackVersion ()Lorg/gradle/api/provider/Property;
+	public final fun getVersionCatalogName ()Lorg/gradle/api/provider/Property;
 }
 
 public abstract class cn/elytra/gradle/conventions/extension/ModpackVersionExtension : kotlin/collections/AbstractMap {
