@@ -28,7 +28,9 @@ jobs:
         run: ./gradlew build
 
       - name: Publish to Gradle Plugin Portal
-        run: ./gradlew :elytra-conventions:publishPlugins
+        run: ./gradlew :elytra-conventions:publish
         env:
-          GRADLE_PUBLISH_KEY: ${{ secrets.ORG_GRADLE_PROJECT_GRADLE_PUBLISH_KEY }}
-          GRADLE_PUBLISH_SECRET: ${{ secrets.ORG_GRADLE_PROJECT_GRADLE_PUBLISH_SECRET }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MC_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MC_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGN_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGN_KEY_ID }}
