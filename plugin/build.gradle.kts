@@ -3,7 +3,7 @@ plugins {
 	`kotlin-dsl`
 	`maven-publish`
 
-	id("com.palantir.git-version") version "4.0.0"
+	id("com.palantir.git-version") version "4.3.0"
 	id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.18.1"
 
 	id("com.gradle.plugin-publish") version "2.0.0"
