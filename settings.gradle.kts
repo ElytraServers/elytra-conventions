@@ -11,4 +11,5 @@ if(System.getenv("JITPACK") != "true") {
 	include("testMod", "testMod2")
 	// FIXME: update testMod3
 	// includeBuild("testMod3")
+	includeBuild("testMod4")
 }

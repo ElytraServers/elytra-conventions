@@ -1,9 +1,7 @@
 package cn.elytra.gradle.conventions.extension
 
-import cn.elytra.gradle.conventions.internal.ConventionsConst
+import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.provider.Property
-import org.gradle.kotlin.dsl.property
 import org.jetbrains.annotations.ApiStatus
 import javax.inject.Inject
 
@@ -17,14 +15,11 @@ public abstract class ElytraSettingsExtension {
 	internal abstract val objectFactory: ObjectFactory
 
 	/**
-	 * The modpack version to create the version catalogs.
+	 * The version catalogs.
+	 *
+	 * @see VersionCatalog
 	 */
-	public val modpackVersion: Property<String> =
-		objectFactory.property<String>().convention(ConventionsConst.DEFAULT_MODPACK_MANIFEST_VERSION)
-
-	/**
-	 * The name of the version catalog. `gtNewHorizons` by default.
-	 */
-	public val versionCatalogName: Property<String> = objectFactory.property<String>().convention("gtNewHorizons")
+	public val versionCatalogs: NamedDomainObjectContainer<VersionCatalog> =
+		objectFactory.domainObjectContainer(VersionCatalog::class.java)
 
 }
