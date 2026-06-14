@@ -8,6 +8,6 @@ public object ConventionsConst {
 	// since v1.1.1
 	public const val PROP_KEY_ATTACH_MANIFEST_VERSION_TO_JAR: String = "elytra.manifest.attach-version-to-jar"
 
-	public const val DEFAULT_MODPACK_MANIFEST_VERSION: String = "2.7.4"
+	public const val DEFAULT_MODPACK_MANIFEST_VERSION: String = "2.8.4"
 
 }
