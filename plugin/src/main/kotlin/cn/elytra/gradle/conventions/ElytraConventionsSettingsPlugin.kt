@@ -41,9 +41,16 @@ public class ElytraConventionsSettingsPlugin : Plugin<Settings> {
 
 	private fun VersionCatalogBuilder.buildVersionCatalog(manifest: Manifest) {
 		ManifestUtils.extractManifestToMap(manifest)
-			.mapKeys { (key, _) -> Util.intoCamelCase(key) }
 			.forEach { (name, version) ->
-				version(name, version)
+				val aliasName = Util.intoCamelCase(name)
+				version(aliasName, version)
+				if (name in manifest.github_mods) {
+					library(aliasName, GTNH_GROUP, name).versionRef(aliasName)
+				}
 			}
+	}
+
+	private companion object {
+		private const val GTNH_GROUP = "com.github.GTNewHorizons"
 	}
 }
