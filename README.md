@@ -1,65 +1,116 @@
 # Elytra Conventions
 
-A Gradle convention plugin specifically designed for GTNH projects.\
-一个专门为 GTNH 项目设计的 Gradle 预设插件。
+A Gradle tool plugin designed for GregTech: New Horizons (GTNH) addon development.
 
-## Setup 配置
+## Installation
 
-[![](https://jitpack.io/v/ElytraServers/elytra-conventions.svg)](https://jitpack.io/#ElytraServers/elytra-conventions)
+The plugin is divided into a **Settings plugin** and a **Project plugin**.
 
-You can get the plugin in JitPack:\
-你可以从 JitPack 获取插件：
-
-```kotlin
-// settings.gradle.kts
-pluginManagement {
-	repositories {
-		// ...
-		maven {
-			url = uri("https://jitpack.io")
-		}
-	}
-}
-```
-
-Then, you can import the plugin to your project:\
-然后你可以把插件添加到你的项目：
+The **Settings plugin** should be applied in `settings.gradle(.kts)` and affects the entire project.
 
 ```kotlin
 plugins {
-	// ...
-	id("com.github.ElytraServers.elytra-conventions") version "{VERSION_HERE}"
+    id("cn.elytra.gradle.conventions.settings")
 }
 ```
 
-### Version Management with Manifests 使用清单进行版本管理
-
-The GTNH team provides a modpack manifest which contains version information for the mods. This manifest significantly
-reduces the time you spend looking for dependency versions.\
-GTNH 团队会提供模组包清单（Manifest），其中包含模组的版本信息。通过这个清单，你可以省去大量寻找依赖版本的时间。
-
-To use this feature, you'll need to include this plugin first. Then, define your desired modpack version in
-gradle.properties using the key `elytra.manifest.version`.\
-使用这个功能，你需要先引入这个插件，然后在 gradle.properties 里用键 `elytra.manifest.version` 定义你希望的模组包版本。
-
-You can also disable manifest caching with elytra.manifest.no-cache. Caching is disabled by default for
-nightly, daily, and experimental versions.\
-你还可以使用 `elytra.manifest.no-cache` 来禁用清单文件的缓存。默认 nightly，daily，experimental 这些版本的缓存是禁用的。
-
-For example:\
-例如：
-
-```properties
-elytra.manifest.version=2.7.4 # Modpack version 2.7.4
-elytra.manifest.no-cache=true # Don't use caches
-```
-
-Then you can access the versions like:\
-然后你可以像这样获取版本：
+The **Project plugin** should be applied in `build.gradle(.kts)` and affects an individual subproject.
 
 ```kotlin
-elytraModpackVersion["MOD_NAME"]
+plugins {
+    id("cn.elytra.gradle.conventions")
+}
 ```
 
-Notice that `elytraModpackVersion` can only be accessible in non-static scope in most cases.\
-注意，`elytraModpackVersion` 大部分情况下需要在非静态状态才能访问。
+## Features
+
+### Manifest-based Version Management
+
+To ensure compatibility with the modpack, addon mods often depend on multiple mods included within the pack. Manually tracking mod versions across modpack updates can be tedious. Fortunately, GTNH provides mod manifests for each version, which include version details that can be utilized directly.
+
+Elytra Conventions provides two methods for extracting versions: [(a) Injected Version Catalogs](#injected-version-catalogs) and [(b) Direct Version Reading](#direct-version-reading).
+
+**Note:** The versions `nightly`, `daily`, and `experimental` will never use the cache.
+
+#### Injected Version Catalogs
+
+*Requires the Settings plugin.*
+
+Configure the name and version of the Version Catalog in `settings.gradle(.kts)`. Multiple catalogs are supported.
+
+```kotlin
+elytra {
+    // Declare catalogs within the versionCatalogs block
+    versionCatalogs {
+        // Declare a catalog for version 2.7.4
+        create("gtnh274") {
+            version = "2.7.4"
+        }
+        // Declare a catalog for version 2.8.4
+        create("gtnh284") {
+            version = "2.8.4"
+            useCache = false
+        }
+        // You can use these in build.gradle(.kts) just like any other version catalog.
+        // Example: Use `gtnh274.versions.ae2stuff` to get a `Provider<String>` instance containing the version of AE2Stuff.
+        // Further reading: https://docs.gradle.org/current/userguide/version_catalogs.html
+    }
+}
+```
+
+#### Direct Version Reading
+
+*Requires the Project plugin applied to the respective subproject.*
+
+Configure the version information in `build.gradle(.kts)`:
+
+```kotlin
+elytraModpackVersion {
+    // Modpack version
+    gtnhVersion = "2.8.0-beta-4"
+    // Whether to use cache
+    manifestNoCache = true
+}
+```
+
+Alternatively, configure it directly via `gradle.properties`:
+
+```properties
+elytra.manifest.version=2.7.0
+elytra.manifest.no-cache=false
+```
+
+To read the version information:
+**Note:** The following methods are generally only accessible within the **Project Scope** (cannot be *static*).
+
+```kotlin
+println("GT5U version is: " + elytraModpackVersion["GT5-Unofficial"])
+```
+
+The plugin also provides helper methods for dependencies under the `com.github.GTNewHorizons` group:
+
+```kotlin
+dependencies {
+    // Equivalent to: implementation("com.github.GTNewHorizons:CodeChickenCore:${elytraModpackVersion["CodeChickenCore"]}")
+    implementation(elytraModpackVersion.gtnh("CodeChickenCore"))
+
+    // Equivalent to: implementation("com.github.GTNewHorizons:CodeChickenCore:${elytraModpackVersion["CodeChickenCore"]}:dev")
+    implementation(elytraModpackVersion.gtnhdev("CodeChickenCore"))
+}
+```
+
+Additionally, it provides the functionality to attach the modpack version to the output JAR.
+
+Add the following to `build.gradle(.kts)`:
+
+```kotlin
+elytraModpackVersion {
+    attachManifestVersionToJar = true
+}
+```
+
+Or add to `gradle.properties`:
+
+```properties
+elytra.manifest.attach-version-to-jar=true
+```

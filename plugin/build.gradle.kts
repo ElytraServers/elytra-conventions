@@ -34,8 +34,9 @@ dependencies {
 }
 
 gradlePlugin {
+	val jitpack = System.getenv("JITPACK") == "true"
 	val main by plugins.creating {
-		id = if(System.getenv("JITPACK") == "true") {
+		id = if(jitpack) {
 			println("I love you JitPack!")
 			"com.github.ElytraServers.elytra-conventions"
 		} else {
@@ -44,6 +45,15 @@ gradlePlugin {
 		implementationClass = "cn.elytra.gradle.conventions.ElytraConventionsPlugin"
 		displayName = "Elytra Conventions"
 		description = "Nothing, just a conventions."
+		tags = listOf("minecraft")
+	}
+
+	val settings by plugins.creating {
+		id =
+			if(jitpack) "com.github.ElytraServers.elytra-conventions-settings" else "cn.elytra.gradle.conventions.settings"
+		implementationClass = "cn.elytra.gradle.conventions.ElytraConventionsSettingsPlugin"
+		displayName = "Elytra Conventions Settings"
+		description = "Nothing, just a conventions for settings."
 		tags = listOf("minecraft")
 	}
 

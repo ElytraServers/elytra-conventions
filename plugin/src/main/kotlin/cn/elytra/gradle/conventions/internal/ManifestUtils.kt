@@ -8,6 +8,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.gradle.api.Project
+import org.gradle.api.initialization.Settings
 import java.io.File
 import java.io.FileNotFoundException
 import java.net.URI
@@ -124,4 +125,46 @@ internal object ManifestUtils {
 		return listManifestsFromGithub()
 			.getOrThrow { IllegalStateException("Failed to load the manifest from Github", it) }
 	}
+
+	internal fun loadManifestV2(
+		version: String,
+		manifestDirectory: File,
+		useCache: Boolean = true,
+	): Manifest {
+		val canUseCache = useCache && version !in FORCE_REFRESH_VERSIONS
+		// from caches
+		if(canUseCache) {
+			val path = manifestDirectory.resolve("${version}.json")
+			try {
+				return gson.fromJson(path.bufferedReader(Charsets.UTF_8), Manifest::class.java)
+			} catch(readException: Exception) {
+				// it's ok, we can accept this failure.
+				try {
+					if(path.exists()) path.delete()
+				} catch(deleteException: Exception) {
+					// well, in this case, we throw it up.
+					deleteException.addSuppressed(readException)
+					throw deleteException
+				}
+			}
+		}
+		// from online
+		return loadManifestFromGithub(version).getOrThrow {
+			IllegalStateException("Failed to load the manifest from Github", it)
+		}
+	}
 }
+
+internal fun Project.loadManifest(version: String, useCache: Boolean = true) =
+	ManifestUtils.loadManifestV2(
+		version = version,
+		manifestDirectory = layout.buildDirectory.dir("elytra_conventions").get().asFile,
+		useCache = useCache,
+	)
+
+internal fun Settings.loadManifest(version: String, useCache: Boolean = true) =
+	ManifestUtils.loadManifestV2(
+		version = version,
+		manifestDirectory = gradle.gradleUserHomeDir.resolve("elytra-conventions"),
+		useCache = useCache,
+	)

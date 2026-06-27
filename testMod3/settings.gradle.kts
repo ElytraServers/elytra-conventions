@@ -21,10 +21,13 @@ pluginManagement {
         mavenCentral()
         mavenLocal()
     }
+
+    includeBuild("../plugin")
 }
 
 plugins {
     id("com.gtnewhorizons.gtnhsettingsconvention") version("2.0.26")
+    id("cn.elytra.gradle.conventions.settings")
 }
 
 rootProject.name = "ElytraConventionsExampleMod"
