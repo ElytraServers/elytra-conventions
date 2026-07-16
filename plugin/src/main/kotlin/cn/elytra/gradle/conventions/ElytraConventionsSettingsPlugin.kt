@@ -8,7 +8,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.api.initialization.dsl.VersionCatalogBuilder
 import org.gradle.api.logging.Logging
-import org.gradle.kotlin.dsl.getValue
 import org.jetbrains.annotations.ApiStatus
 
 @ApiStatus.AvailableSince("1.2.0")
@@ -23,8 +22,8 @@ public class ElytraConventionsSettingsPlugin : Plugin<Settings> {
 				versionCatalogs {
 					elytra.versionCatalogs.forEach { versionCatalog ->
 						val name = versionCatalog.name
-						val version by versionCatalog.version
-						val useCache by versionCatalog.useCache.convention(true)
+						val version = versionCatalog.version.get()
+						val useCache = versionCatalog.useCache.convention(true).get()
 						logger.debug("Initializing version catalog {} ({})", name, version)
 
 						try {
