@@ -28,8 +28,7 @@ public class cn/elytra/gradle/conventions/Mod {
 
 public abstract class cn/elytra/gradle/conventions/extension/ElytraSettingsExtension {
 	public fun <init> ()V
-	public final fun getModpackVersion ()Lorg/gradle/api/provider/Property;
-	public final fun getVersionCatalogName ()Lorg/gradle/api/provider/Property;
+	public final fun getVersionCatalogs ()Lorg/gradle/api/NamedDomainObjectContainer;
 }
 
 public abstract class cn/elytra/gradle/conventions/extension/ModpackVersionExtension : kotlin/collections/AbstractMap {
@@ -61,6 +60,13 @@ public abstract class cn/elytra/gradle/conventions/extension/ModpackVersionExten
 	public final fun setAttachManifestVersionToJar (Z)V
 	public final fun setGtnhVersion (Ljava/lang/String;)V
 	public final fun setManifestNoCache (Z)V
+}
+
+public abstract class cn/elytra/gradle/conventions/extension/VersionCatalog {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getName ()Ljava/lang/String;
+	public abstract fun getUseCache ()Lorg/gradle/api/provider/Property;
+	public abstract fun getVersion ()Lorg/gradle/api/provider/Property;
 }
 
 public abstract class cn/elytra/gradle/conventions/task/ListAvailableManifestsTask : org/gradle/api/DefaultTask {
