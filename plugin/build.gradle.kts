@@ -43,6 +43,14 @@ gradlePlugin {
 		tags = listOf("Minecraft")
 	}
 
+	plugins.register("settings") {
+		id = "cn.elytra.gradle.conventions.settings"
+		implementationClass = "cn.elytra.gradle.conventions.ElytraConventionsSettingsPlugin"
+		displayName = "Elytra Conventions Settings"
+		description = "Nothing, just a conventions for settings."
+		tags = listOf("minecraft")
+	}
+
 	website = "https://github.com/ElytraServers/elytra-conventions"
 	vcsUrl = "https://github.com/ElytraServers/elytra-conventions"
 }
