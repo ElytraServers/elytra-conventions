@@ -43,9 +43,8 @@ gradlePlugin {
 		tags = listOf("Minecraft")
 	}
 
-	val settings by plugins.creating {
-		id =
-			if(jitpack) "com.github.ElytraServers.elytra-conventions-settings" else "cn.elytra.gradle.conventions.settings"
+	plugins.register("settings") {
+		id = "cn.elytra.gradle.conventions.settings"
 		implementationClass = "cn.elytra.gradle.conventions.ElytraConventionsSettingsPlugin"
 		displayName = "Elytra Conventions Settings"
 		description = "Nothing, just a conventions for settings."
