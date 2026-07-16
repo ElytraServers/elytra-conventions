@@ -25,7 +25,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew :elytra-conventions:build
 
       - name: Publish to Gradle Plugin Portal
         run: ./gradlew :elytra-conventions:publish
