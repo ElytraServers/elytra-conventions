@@ -11,7 +11,8 @@ plugins {
 	id("com.vanniktech.maven.publish") version "0.37.0"
 }
 
-val gitVersion: groovy.lang.Closure<String> by extra
+@Suppress("UNCHECKED_CAST")
+val gitVersion = extra.get("gitVersion") as groovy.lang.Closure<String>
 
 group = "cn.elytra.gradle"
 version = System.getenv("VERSION") ?: gitVersion()
@@ -34,18 +35,12 @@ dependencies {
 }
 
 gradlePlugin {
-	val jitpack = System.getenv("JITPACK") == "true"
-	val main by plugins.creating {
-		id = if(jitpack) {
-			println("I love you JitPack!")
-			"com.github.ElytraServers.elytra-conventions"
-		} else {
-			"cn.elytra.gradle.conventions"
-		}
+	plugins.register("main") {
+		id = "cn.elytra.gradle.conventions"
 		implementationClass = "cn.elytra.gradle.conventions.ElytraConventionsPlugin"
 		displayName = "Elytra Conventions"
 		description = "Nothing, just a conventions."
-		tags = listOf("minecraft")
+		tags = listOf("Minecraft")
 	}
 
 	val settings by plugins.creating {

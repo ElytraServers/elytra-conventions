@@ -3,7 +3,9 @@ package cn.elytra.gradle.conventions.task
 import cn.elytra.gradle.conventions.internal.ManifestUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
+import org.gradle.work.DisableCachingByDefault
 
+@DisableCachingByDefault
 public abstract class ListAvailableManifestsTask : DefaultTask() {
 
 	@TaskAction
