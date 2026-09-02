@@ -5,7 +5,7 @@ plugins {
 	signing
 
 	id("com.palantir.git-version") version "5.1.0"
-	id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.18.1"
+	id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.18.2"
 
 	id("com.gradle.plugin-publish") version "2.1.1"
 	id("com.vanniktech.maven.publish") version "0.37.0"
