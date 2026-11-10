@@ -4,7 +4,7 @@ plugins {
 	`maven-publish`
 	signing
 
-	id("com.palantir.git-version") version "5.1.0"
+	id("com.palantir.git-version") version "5.2.0"
 	id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.18.2"
 
 	id("com.gradle.plugin-publish") version "2.2.1"
